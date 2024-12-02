@@ -18,17 +18,34 @@ class _HomePageState extends State<HomePage> {
     {'address': '789 Pine Ave', 'status': 'Reserved', 'payment': 'Paid'},
   ];
 
-  // Function to filter parking areas based on search input
-  List<Map<String, String>> get filteredParkingAreas {
-    if (searchController.text.isEmpty) {
-      return parkingAreas; // Return all areas if search text is empty
-    } else {
-      return parkingAreas
-          .where((area) => area['address']!
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase()))
-          .toList();
-    }
+  // List to store filtered parking areas
+  late List<Map<String, String>> filteredParkingAreas;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize filteredParkingAreas with all parking areas by default
+    filteredParkingAreas = List.from(parkingAreas);
+
+    // Add a listener to the searchController to filter list on text input
+    searchController.addListener(() {
+      filterParkingAreas(searchController.text);
+    });
+  }
+
+  void filterParkingAreas(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        // Show all areas if the search field is empty
+        filteredParkingAreas = List.from(parkingAreas);
+      } else {
+        // Filter the list based on the query
+        filteredParkingAreas = parkingAreas
+            .where((area) =>
+                area['address']!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -55,70 +72,70 @@ class _HomePageState extends State<HomePage> {
                 borderSide: const BorderSide(color: Color(0xff0D8230)),
               ),
             ),
-            onChanged: (value) {
-              setState(() {}); // Update the list when search changes
-            },
           ),
           const SizedBox(height: 20),
 
           // Parking Areas List
           Expanded(
-            child: ListView.builder(
-              itemCount: filteredParkingAreas.length,
-              itemBuilder: (context, index) {
-                final area = filteredParkingAreas[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16.0),
-                      title: Text(
-                        area['address']!,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Status: ${area['status']}'),
-                          Text('Payment Status: ${area['payment']}'),
-                        ],
-                      ),
-                      trailing: area['status'] == 'Available'
-                          ? ElevatedButton(
-                              onPressed: () {
-                                // Navigate to payment page or booking page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const PaymentPage(),
-                                  ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xff0D8230),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0,
-                                  vertical: 8.0,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+            child: filteredParkingAreas.isEmpty
+                ? const Center(child: Text('No spots found'))
+                : ListView.builder(
+                    itemCount: filteredParkingAreas.length,
+                    itemBuilder: (context, index) {
+                      final area = filteredParkingAreas[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16.0),
+                            title: Text(
+                              area['address']!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
-                              child: const Text('Reserve'),
-                            )
-                          : Container(),
-                    ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Status: ${area['status']}'),
+                                Text('Payment Status: ${area['payment']}'),
+                              ],
+                            ),
+                            trailing: area['status'] == 'Available'
+                                ? ElevatedButton(
+                                    onPressed: () {
+                                      // Navigate to payment page or booking page
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PaymentPage(),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff0D8230),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0,
+                                        vertical: 8.0,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text('Reserve'),
+                                  )
+                                : Container(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

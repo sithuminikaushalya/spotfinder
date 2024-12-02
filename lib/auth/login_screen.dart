@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotfinder/auth/signup_screen.dart';
+import 'package:spotfinder/user/user_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -142,13 +143,16 @@ class _LoginState extends State<Login> {
                             ),
                             const SizedBox(height: 50),
                             // Login Button
+                            // Login Button
                             GestureDetector(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Form Submitted"),
-                                    ),
+                                  // Simulate login success and navigate to the UserScreen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const UserScreen()),
                                   );
                                 }
                               },
