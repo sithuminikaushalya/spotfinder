@@ -2,7 +2,7 @@
 
 ## 📽️ App Recording
 
-[Click here to download and view the app recording](assets/recordings/app-recording.mp4)
+<video src="https://github.com/user-attachments/assets/944482c6-3710-4fd1-ba46-d872b5e18696" controls width="800"></video>
 
 # Flutter Firebase App
 
