@@ -1,5 +1,9 @@
 # spotfinder
 
+## 📽️ App Recording
+
+[Click here to download and view the app recording](assets/recordings/app-recording.mp4)
+
 # Flutter Firebase App
 
 A Flutter mobile application that integrates Firebase for user authentication and role-based access control. This app includes features for **admin** and **normal user** roles, with login, signup, and forgot password functionality.
