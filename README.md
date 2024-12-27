@@ -32,3 +32,14 @@ A Flutter mobile application that integrates Firebase for user authentication an
    git clone <repository-url>
    cd <project-directory>
 
+2. Install dependencies:
+   ```bash
+   flutter pub get
+
+3. Configure Firebase by adding your google-services.json (for Android) and GoogleService-Info.plist (for iOS) files.
+   
+5. Run the application:
+   ```bash
+   flutter run
+
+
